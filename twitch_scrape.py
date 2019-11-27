@@ -9,6 +9,7 @@ import requests
 import sys
 import json
 import pandas as pd
+from sqlalchemy import create_engine
 
 def _envget():
     file_contents = []
@@ -18,10 +19,23 @@ def _envget():
             for line in file:
                 file_contents.append(line.strip())
             credentials['TWITCH_CLIENT_ID'] = file_contents[0]
+            credentials['DB_USER'] = file_contents[1]
+            credentials['DB_PASS'] = file_contents[2]
+            credentials['DB_HOST'] = file_contents[3]
+            credentials['DB_PORT'] = file_contents[4]
+            credentials['DB_NAME'] = file_contents[5]
     except Exception as e:
         print(e)
 
     return credentials
+def write_overwatch_data(credentials):
+    try:
+        engine = create_engine('mysql+mysqlconnector://{}:{}@{}:{}/{}'.format(credentials['DB_USER'], credentials['DB_PASS'], credentials['DB_HOST'], credentials['DB_PORT'], credentials['DB_NAME']))
+        conn = engine.connect()
+        query = 'CREATE TABLE IF NOT EXISTS overwatch_data (id INT);'
+        conn.execute(query)
+    except Exception as e:
+        print(e)
 
 def main():
     overwatch_raw_data = {'user_name': [], 'user_id': [], 'broadcast_id': [], 'stream_start_time': [], 'stream_title': [], 'viewer_count': []}
