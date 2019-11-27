@@ -24,7 +24,7 @@ def _envget():
     return credentials
 
 def main():
-    overwatch_raw_data = {'user_name': [], 'user_id': [], 'broadcast_id': [], 'stream_start_time': [], 'viewer_count': []}
+    overwatch_raw_data = {'user_name': [], 'user_id': [], 'broadcast_id': [], 'stream_start_time': [], 'stream_title': [], 'viewer_count': []}
     credentials = _envget()
     try:
         session = requests.Session()
@@ -37,7 +37,7 @@ def main():
         top_overwatch_streams_second_page = fetch_top_overwatch_streams(session, top_overwatch_streams_first_page[1])
         populate_dictionary(top_overwatch_streams_second_page[0], overwatch_raw_data)
         overwatch_stream_data = pd.DataFrame.from_dict(overwatch_raw_data)
-        print(overwatch_stream_data)
+        print(overwatch_stream_data.to_string())
     except Exception as e:
         print(e)
 
@@ -47,6 +47,7 @@ def populate_dictionary(overwatch_streams, overwatch_raw_data):
         overwatch_raw_data['user_id'].append(stream['user_id'])
         overwatch_raw_data['broadcast_id'].append(stream['id'])
         overwatch_raw_data['stream_start_time'].append(stream['started_at'])
+        overwatch_raw_data['stream_title'].append(stream['title'])
         overwatch_raw_data['viewer_count'].append(stream['viewer_count'])
 
     return overwatch_raw_data
