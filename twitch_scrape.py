@@ -55,6 +55,7 @@ def populate_dictionary(streams, stream_raw_data):
         stream_raw_data['id'].append(str(stream['id'] + '-' + CLEAN_TIME))
         stream_raw_data['user_id'].append(stream['user_id'])
         stream_raw_data['user_name'].append(stream['user_name'])
+        stream_raw_data['language'].append(stream['language'])
         stream_raw_data['game_id'].append(stream['game_id'])
         stream_raw_data['game_name'].append(stream['game_name'])
         stream_raw_data['broadcast_id'].append(stream['id'])
@@ -89,6 +90,7 @@ def clear_data(stream_raw_data):
     stream_raw_data['id'].clear()
     stream_raw_data['user_id'].clear()
     stream_raw_data['user_name'].clear()
+    stream_raw_data['language'].clear()
     stream_raw_data['game_id'].clear()
     stream_raw_data['game_name'].clear()
     stream_raw_data['broadcast_id'].clear()
@@ -106,6 +108,7 @@ def write_overwatch_data(credentials, overwatch_stream_data):
         'id': VARCHAR(255),
         'user_id': BIGINT(),
         'user_name': VARCHAR(255),
+        'language': VARCHAR(255),
         'game_id': BIGINT(),
         'game_name': VARCHAR(255),
         'broadcast_id': BIGINT(),
@@ -143,6 +146,7 @@ def main():
     stream_raw_data = {'id':[],
                        'user_id': [], 
                        'user_name': [], 
+                       'language': [],
                        'game_id': [], 
                        'game_name': [],
                        'broadcast_id': [], 
